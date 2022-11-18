@@ -38,7 +38,7 @@ const routes = [
     component: PreferView
   },
   {
-    path: '/profile',
+    path: '/profile/:username',
     name: 'profile',
     component: ProfileView
   },

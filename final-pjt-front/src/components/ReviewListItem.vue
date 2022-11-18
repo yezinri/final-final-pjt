@@ -1,6 +1,7 @@
 <template>
   <div>
-    <span>{{ review.content }}</span>
+    <span><router-link :to="{ name: 'profile', params: { username: review.username } }">{{ review.username }}</router-link></span>
+    <span> : {{ review.content }}</span>
     <button @click="deleteReview">삭제</button>
     <button
       :id="'like-btn-' + review.id"
@@ -32,7 +33,8 @@ export default {
   computed: {
     isLike: {
       get() {
-        return this.review.like_users.includes(this.userId)
+        // console.log(this.review)
+        return this.review.like_users?.includes(this.userId)
       },
       set() {
 
@@ -67,7 +69,6 @@ export default {
         .then((res) => {
           console.log(res)
           const likeBtn = document.querySelector(`#like-btn-${this.review.id}`);
-          console.log(likeBtn)
 
           if (res.data.is_like === true) {
             likeBtn.innerText = '좋아요 취소'

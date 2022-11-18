@@ -3,6 +3,8 @@
     <h1>Detail</h1>
     <p v-if="movie">{{ movie.title }}</p>
     <p v-if="movie">{{ movie.overview }}</p>
+    <button id="like-btn" v-if="!isLike" @click="movieLike">좋아요</button>
+    <button id="like-btn" v-if="isLike" @click="movieLike">좋아요 취소</button>
     <hr>
     <ReviewCreate @createReview="getReviews"/>
     <ReviewList :reviews="reviews" @deleteReview="getReviews"/>
@@ -27,11 +29,22 @@ export default {
     return {
       movie: null,
       reviews: null,
+      userId: this.$store.state.userId,
     }
   },
   created() {
     this.getMovieDetail()
     this.getReviews()
+  },
+  computed: {
+    isLike: {
+      get() {
+        return this.movie?.like_users?.includes(this.userId)
+      },
+      set() {
+
+      }
+    }
   },
   methods: {
     getMovieDetail() {
@@ -61,7 +74,29 @@ export default {
             this.reviews = null
           }
         })
-    }
+    },
+    movieLike() {
+      axios({
+        method: 'post',
+        url: `${API_URL}/movies/${this.$route.params.id}/likes/`,
+        headers: {
+            Authorization: `Token ${ this.$store.state.token }`
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          const likeBtn = document.querySelector('#like-btn')
+
+          if (res.data.is_like === true) {
+            likeBtn.innerText = '좋아요 취소'
+          } else {
+            likeBtn.innerText = '좋아요'
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
   }
 }
 </script>

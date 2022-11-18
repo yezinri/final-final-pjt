@@ -7,15 +7,16 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .serializers import MovieListSerializer, MovieSerializer, ReviewSerializer
+from .serializers import MovieSerializer, ReviewSerializer
 from .models import Movie, Review
+
 
 # Create your views here.
 @api_view(['GET'])
 def movie_list(request):
     if request.method == 'GET':
         movies = get_list_or_404(Movie)
-        serializer = MovieListSerializer(movies, many=True)
+        serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
 
 @api_view(['GET'])
@@ -57,9 +58,10 @@ def review_detail(request, movie_pk, review_pk):
 def review_create(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     user = request.user
+    username = request.user.username
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(movie=movie, user=user)
+        serializer.save(movie=movie, user=user, username=username)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
@@ -72,6 +74,23 @@ def review_likes(request, movie_pk, review_pk):
         is_like = False
     else:
         review.like_users.add(request.user)
+        is_like = True
+
+    context = {
+        'is_like': is_like,
+    }
+    return Response(context)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def movie_likes(request, movie_pk):
+    movie = Movie.objects.get(pk=movie_pk)
+
+    if movie.like_users.filter(pk=request.user.pk).exists():
+        movie.like_users.remove(request.user)
+        is_like = False
+    else:
+        movie.like_users.add(request.user)
         is_like = True
 
     context = {

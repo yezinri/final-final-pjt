@@ -2,6 +2,7 @@
   <div id="app">
     <nav>
       <router-link :to="{ name: 'movie' }">Home</router-link> |
+      <router-link :to="{ name: 'profile', params: { username: userName } }">Profile</router-link> |
       <router-link :to="{ name: 'signup' }">Signup</router-link> |
       <router-link :to="{ name: 'login' }">Login</router-link> |
       <button v-if="isLogin" @click="logOut">Logout</button>
@@ -13,9 +14,17 @@
 <script>
 export default {
   name: 'App',
+  // data() {
+  //   return {
+  //     userName: this.$store.state.userName
+  //   }
+  // },
   computed: {
     isLogin() {
       return this.$store.getters.isLogin
+    },
+    userName() {
+      return this.$store.state.userName
     }
   },
   methods: {

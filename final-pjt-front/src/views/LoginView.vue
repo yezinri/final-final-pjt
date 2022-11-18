@@ -32,7 +32,7 @@ export default {
         password: password,
       }
       this.$store.dispatch('logIn', payload)
-    }
+    },
   }
 }
 </script>

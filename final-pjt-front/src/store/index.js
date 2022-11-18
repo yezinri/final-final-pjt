@@ -16,7 +16,8 @@ export default new Vuex.Store({
     movies: [],
     reviews: [],
     token: null,
-    // isLike: null,
+    userId: null,
+    userName: null,
   },
   getters: {
     isLogin(state) {
@@ -37,9 +38,11 @@ export default new Vuex.Store({
     DELETE_TOKEN(state) {
       state.token = null
     },
-    // REVIEW_LIKE(state, isLike) {
-    //   state.isLike = isLike
-    // }
+    GET_ID(state, userData) {
+      console.log('아이디랑 유저네임 바뀜')
+      state.userId = userData.pk
+      state.userName = userData.username
+    }
   },
   actions: {
     getMovies(context) {
@@ -96,8 +99,10 @@ export default new Vuex.Store({
         }
       })
         .then((res) => {
-          // console.log(res.data.key)
           context.commit('SAVE_TOKEN', res.data.key)
+        })
+        .then(() => {
+          context.dispatch('getId')
         })
     },
     logOut(context) {
@@ -109,23 +114,25 @@ export default new Vuex.Store({
           // console.log(res.data.key)
           context.commit('DELETE_TOKEN', res.data.key)
         })
+        
     },
-    // reviewLike(context, payload) {
-    //   axios({
-    //     method: 'post',
-    //     url: `${API_URL}/movies/${payload.movie_id}/reviews/${payload.review_id}/likes/`,
-    //     headers: {
-    //         Authorization: `Token ${ context.state.token }`
-    //     }
-    //   })
-    //     .then((res) => {
-    //       // console.log(res.data.is_like)
-    //       context.commit('REVIEW_LIKE', res.data.is_like)
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     })
-    // }
+    getId(context) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/accounts/user/`,
+        headers: {
+            Authorization: `Token ${ context.state.token }`
+        }
+      })
+        .then((res) => {
+          // console.log(res.data)
+          context.commit('GET_ID', res.data)
+          // this.userId = res.data.pk
+        })
+        .catch((err) => {
+          console.loe(err, 'getId 에러')
+        })
+    }
   },
   modules: {
   }
