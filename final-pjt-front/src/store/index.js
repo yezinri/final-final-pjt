@@ -6,6 +6,8 @@ import router from '@/router'
 
 Vue.use(Vuex)
 
+
+
 const API_URL = 'http://127.0.0.1:8000'
 
 export default new Vuex.Store({
@@ -18,6 +20,7 @@ export default new Vuex.Store({
     token: null,
     userId: null,
     userName: null,
+    randomMovies: null,
   },
   getters: {
     isLogin(state) {
@@ -31,9 +34,11 @@ export default new Vuex.Store({
     GET_REVIEWS(state, reviews) {
       state.reviews = reviews
     },
+    // 회원가입과 로그인했을 때의 이동페이지가 달라서 아마 이것도 구분해줘야할듯 (11.20 민혁)
     SAVE_TOKEN(state, token) {
       state.token = token
-      router.push({ name: 'movie' })
+      // router.push({ name: 'movie' })
+      router.push({ name: 'selection' })
     },
     DELETE_TOKEN(state) {
       state.token = null
@@ -42,6 +47,10 @@ export default new Vuex.Store({
       console.log('아이디랑 유저네임 바뀜')
       state.userId = userData.pk
       state.userName = userData.username
+    },
+    RANDOM_MOVIES(state, randomMovies) {
+      console.log('드디어 랜덤영화왔다..')
+      state.randomMovies = randomMovies['random_top_movies']
     }
   },
   actions: {
@@ -132,7 +141,21 @@ export default new Vuex.Store({
         .catch((err) => {
           console.loe(err, 'getId 에러')
         })
-    }
+    },
+    randomMovies(context) {
+      console.log('actions')
+      axios({
+        method: 'get',
+        url: `${API_URL}/movies/random_movies/`,
+      })
+        .then((res) => {
+        console.log(res)
+        context.commit('RANDOM_MOVIES', res.data)
+        })
+        .catch((err) => {
+        console.log(err)
+        })
+    },
   },
   modules: {
   }

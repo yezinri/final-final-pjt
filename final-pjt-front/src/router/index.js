@@ -7,6 +7,7 @@ import DetailView from '@/views/DetailView'
 import PreferView from '@/views/PreferView'
 import SignupView from '@/views/SignupView'
 import ProfileView from '@/views/ProfileView'
+import SelectionView from '@/views/SelectionView'
 
 
 Vue.use(VueRouter)
@@ -41,6 +42,11 @@ const routes = [
     path: '/profile/:username',
     name: 'profile',
     component: ProfileView
+  },
+  {
+    path: '/selection',
+    name: 'selection',
+    component: SelectionView
   },
 ]
 

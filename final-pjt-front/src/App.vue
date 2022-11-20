@@ -4,7 +4,8 @@
       <router-link :to="{ name: 'movie' }">Home</router-link> |
       <router-link :to="{ name: 'profile', params: { username: userName } }">Profile</router-link> |
       <router-link :to="{ name: 'signup' }">Signup</router-link> |
-      <router-link :to="{ name: 'login' }">Login</router-link> |
+      <router-link v-if="!isLogin" :to="{ name: 'login' }">Login | </router-link>  
+      <router-link :to="{ name: 'selection' }">Selection</router-link> |
       <button v-if="isLogin" @click="logOut">Logout</button>
     </nav>
     <router-view/>

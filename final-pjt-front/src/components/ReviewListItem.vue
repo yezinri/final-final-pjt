@@ -24,6 +24,8 @@ export default {
       userId: null,
     }
   },
+  compunted: {
+  },
   props: {
     review: Object,
   },
