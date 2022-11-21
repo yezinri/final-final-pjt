@@ -9,6 +9,7 @@ from .models import User
 import requests
 import json
 import pprint
+import random
 
 
 # Create your views here.
@@ -43,17 +44,19 @@ def recommend(request, username):
             movies = response['results']
 
             # pprint(movies)
-
  
             for movie in movies:
-                how_many.append(movie['id'])
-    
-    print(how_many)
-# 여기서부터 어떻게 가장 많은 순서대로 정렬을 하고 해당 영화 상위 5~10개를 가져올지 생각해보자.
+                how_many.append(movie) 
+
+            how_many =  list(set(how_many))
+            random_recommendation_movies = random.sample(how_many, 5)
+
+    # print(how_many)
+    # 여기서부터 어떻게 가장 많은 순서대로 정렬을 하고 해당 영화 상위 5~10개를 가져올지 생각해보자.
          
 
     context = {
-        'how_many': how_many
+        'random_recommendation_movies': random_recommendation_movies
     }
     return Response(context)
 
