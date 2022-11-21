@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="col">
-        <router-link :to="{ name: 'detail', params: { id: movie.id } }">
+        <router-link :to="{ name: 'detail', params: { movie_id: movie.movie_id } }">
           <img :src="movieSrc" class="card-img-top" :alt="movie.title">
         </router-link>
       </div>
@@ -47,14 +47,14 @@ export default {
     movieLike() {
       axios({
         method: 'post',
-        url: `${API_URL}/movies/${this.movie.id}/likes/`,
+        url: `${API_URL}/movies/${this.movie.movie_id}/likes/`,
         headers: {
             Authorization: `Token ${ this.$store.state.token }`
         }
       })
         .then((res) => {
           console.log(res)
-          const likeBtn = document.querySelector(`#like-btn-${this.movie.id}`)
+          const likeBtn = document.querySelector(`#like-btn-${this.movie.movie_id}`)
 
           if (res.data.is_like === true) {
             likeBtn.innerText = '좋아요 취소'

@@ -10,6 +10,10 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from .serializers import MovieSerializer, ReviewSerializer
 from .models import Movie, Review
 
+from accounts.models import User # 민혁 추가 11.21
+from django.contrib.auth import get_user_model # 민혁 추가
+
+
 # 11.19 DB 받아오기 위해 추가
 import requests
 import json
@@ -28,9 +32,9 @@ def movie_list(request):
 
 @api_view(['GET'])
 def movie_detail(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
+    movie = get_object_or_404(Movie, movie_id=movie_pk)
     if request.method == 'GET':
-        movie = get_object_or_404(Movie, pk=movie_pk)
+        movie = get_object_or_404(Movie, movie_id=movie_pk)
         serializer = MovieSerializer(movie)
         return Response(serializer.data)
 
@@ -63,7 +67,7 @@ def review_detail(request, movie_pk, review_pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def review_create(request, movie_pk):
-    movie = get_object_or_404(Movie, pk=movie_pk)
+    movie = get_object_or_404(Movie, movie_id=movie_pk)
     user = request.user
     username = request.user.username
     serializer = ReviewSerializer(data=request.data)
@@ -91,7 +95,7 @@ def review_likes(request, movie_pk, review_pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def movie_likes(request, movie_pk):
-    movie = Movie.objects.get(pk=movie_pk)
+    movie = Movie.objects.get(movie_id=movie_pk)
 
     if movie.like_users.filter(pk=request.user.pk).exists():
         movie.like_users.remove(request.user)
@@ -177,8 +181,8 @@ def random_movies(request):
                     break
 
         # print(len(random_top_movies), 'end!!')
-        # pprint(random_top_movies)
-    print(len(random_top_movies))
+    #     pprint(random_top_movies[0])
+    # print(len(random_top_movies))
     context = {
         'random_top_movies': random_top_movies,
     }
@@ -216,3 +220,80 @@ def get_db(request):
              }
 
     return Response(context) 
+
+# 영화 추천 함수
+@api_view(['GET'])
+def recommend(request, username):
+    person = get_object_or_404(get_user_model(), username=username)
+
+    liked_movies_id_list = []
+    for like_movies in person.like_movies.all():                # 요게 핵심..
+        liked_movies_id_list.append(like_movies.movie_id)
+        # print(like_movies.movie_id)
+    print(liked_movies_id_list)
+
+    recommended_movies = []
+    how_many = []                       # 추천된 영화 id 목록
+    for liked_movies_id in liked_movies_id_list:
+        for i in range(1, 3):
+            URL = 'https://api.themoviedb.org/3/movie/' + str(liked_movies_id) + '/recommendations?api_key=a10047aa70542f33ac2138abb4e13bb7&language=ko-KR&page=' + str(i)
+            response = requests.get(URL).json()
+            movies = response['results']
+
+            # pprint(movies)
+    
+            for movie in movies:
+                recommended_movies.append(movie)
+                how_many.append(movie['id']) 
+
+
+    how_many2 = {}  # 미쳤다..
+    for id in how_many:
+        if id in how_many2:
+            how_many2[id] = how_many2[id] + 1
+        else:
+            how_many2[id] = 1
+
+
+    # <병진햄의 알고리즘 조언!!!> - 감사합니다~
+    # how_many2 = []
+    # for idx, id in enumerate(how_many):
+    #     for otheridx, cnt, otherid, info in enumerate(how_many2):
+    #         if id == otherid:
+    #             how_many2[otheridx][0] += 1
+    #             break
+    #     else:
+    #         how_many2.append([1, id, info])
+
+    # how_many2.sort()
+    # # [cnt, id, {영화정보}]
+
+
+    how_many2 = list(how_many2.items())
+    how_many2.sort(key=lambda x: x[1], reverse=True)
+    how_many2 = how_many2[0:10]
+    # print(how_many2)
+
+
+    recommended_ids = []
+    for id in how_many2:
+        recommended_ids.append(id[0])
+
+    print(len(recommended_movies))
+    not_redundant_movies = list({recommended_movie['id']: recommended_movie for recommended_movie in recommended_movies}.values())
+    print(len(not_redundant_movies))
+
+    # # recommended_movies = list(set(recommended_movies))
+    final_movies = []
+    for not_redundant_movie in not_redundant_movies:
+        for id in recommended_ids:
+            if not_redundant_movie['id'] == id:
+                final_movies.append(not_redundant_movie)
+
+    print(len(final_movies))
+            
+
+    context = {
+        'final_movies': final_movies
+    }
+    return Response(context)

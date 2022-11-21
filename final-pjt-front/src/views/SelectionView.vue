@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Selection View</h1>
+    <h3 class="text-center">재밌게 봤던 영화를 선택하세요</h3><br>
     <SelectionList/>
   </div>
 </template>

@@ -38,7 +38,7 @@ export default {
   
         axios({
           method: 'post',
-          url: `${API_URL}/movies/${this.$route.params.id}/reviewcreate/`,
+          url: `${API_URL}/movies/${this.$route.params.movie_id}/reviewcreate/`,
           data: { content },
           headers: {
             Authorization: `Token ${ this.$store.state.token }`

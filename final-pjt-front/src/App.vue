@@ -4,11 +4,11 @@
       <div class="container-fluid px-4 py-2">
         <router-link class="navbar-brand fs-2" style="color: #00ABB3;" :to="{ name: 'movie' }">whyisitreal</router-link>
         <div class="navbar-nav">
-          <router-link class="nav-link" :to="{ name: 'profile', params: { username: userName } }">Profile</router-link>
-          <router-link class="nav-link" :to="{ name: 'signup' }">Signup</router-link>
-          <router-link class="nav-link" :to="{ name: 'login' }">Login</router-link>
+          <router-link v-if="isLogin" class="nav-link" :to="{ name: 'profile', params: { username: userName } }">Profile</router-link>
+          <router-link v-if="!isLogin" class="nav-link" :to="{ name: 'signup' }">Signup</router-link>
+          <router-link v-if="!isLogin" class="nav-link" :to="{ name: 'login' }">Login</router-link>
           <router-link class="nav-link" :to="{ name: 'selection' }">Selection</router-link>
-          <a class="nav-link" v-if="isLogin" @click="logOut">Logout</a>
+          <span class="nav-link" v-if="isLogin" @click="logOut">Logout</span>
         </div>
       </div>
     </nav>
@@ -44,7 +44,7 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch('logOut')
-      this.$router.push({ name: 'movie' })
+      // this.$router.push({ name: 'movie' })
     }
   }
 }

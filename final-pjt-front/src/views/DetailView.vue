@@ -69,7 +69,7 @@ export default {
     getMovieDetail() {
       axios({
         method: 'get',
-        url: `${API_URL}/movies/${this.$route.params.id}`,
+        url: `${API_URL}/movies/${this.$route.params.movie_id}`,
       })
         .then((res) => {
           // console.log(res.data)
@@ -82,7 +82,7 @@ export default {
     getReviews() {
       axios({
         method: 'get',
-        url: `${API_URL}/movies/${this.$route.params.id}/reviews/`,
+        url: `${API_URL}/movies/${this.$route.params.movie_id}/reviews/`,
       })
         .then((res) => {
           // console.log(res.data)
@@ -97,7 +97,7 @@ export default {
     movieLike() {
       axios({
         method: 'post',
-        url: `${API_URL}/movies/${this.$route.params.id}/likes/`,
+        url: `${API_URL}/movies/${this.$route.params.movie_id}/likes/`,
         headers: {
             Authorization: `Token ${ this.$store.state.token }`
         }

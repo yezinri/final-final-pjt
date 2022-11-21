@@ -21,6 +21,7 @@
           <button class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" @click="deleteReview">삭제</button>
         </div>
       </div>
+      <!-- <star-rating v-model="rating" :increment=0.5 animate=true></star-rating> -->
     </div>
 
       <!-- <span><router-link :to="{ name: 'profile', params: { username: review.username } }">{{ review.username }}</router-link></span>
@@ -37,14 +38,19 @@
 
 <script>
 import axios from 'axios'
+// import StarRating from 'vue-star-rating'
 
 const API_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'ReviewListItem',
+  // components: {
+  //   StarRating
+  // },
   data() {
     return {
       userId: null,
+      // rating: 0,
     }
   },
   compunted: {
@@ -70,7 +76,7 @@ export default {
     deleteReview() {
       axios({
         method: 'delete',
-        url: `${API_URL}/movies/${this.$route.params.id}/reviews/${this.review.id}`,
+        url: `${API_URL}/movies/${this.$route.params.movie_id}/reviews/${this.review.id}`,
         headers: {
             Authorization: `Token ${ this.$store.state.token }`
         }
@@ -86,7 +92,7 @@ export default {
     reviewLike() {
       axios({
         method: 'post',
-        url: `${API_URL}/movies/${this.$route.params.id}/reviews/${this.review.id}/likes/`,
+        url: `${API_URL}/movies/${this.$route.params.movie_id}/reviews/${this.review.id}/likes/`,
         headers: {
             Authorization: `Token ${ this.$store.state.token }`
         }

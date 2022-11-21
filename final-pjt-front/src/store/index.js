@@ -21,6 +21,7 @@ export default new Vuex.Store({
     userId: null,
     userName: null,
     randomMovies: null,
+    recommendedMovies: null,
   },
   getters: {
     isLogin(state) {
@@ -31,17 +32,26 @@ export default new Vuex.Store({
     GET_MOVIES(state, movies) {
       state.movies = movies
     },
+    GET_RECOMMED_MOVIES(state, movies) {
+      state.recommendedMovies = movies
+    },
     GET_REVIEWS(state, reviews) {
       state.reviews = reviews
     },
     // 회원가입과 로그인했을 때의 이동페이지가 달라서 아마 이것도 구분해줘야할듯 (11.20 민혁)
-    SAVE_TOKEN(state, token) {
+    SAVE_TOKEN_SIGNUP(state, token) {
       state.token = token
       // router.push({ name: 'movie' })
       router.push({ name: 'selection' })
     },
+    SAVE_TOKEN_LOGIN(state, token) {
+      state.token = token
+      router.push({ name: 'movie' })
+      // router.push({ name: 'selection' })
+    },
     DELETE_TOKEN(state) {
       state.token = null
+      router.push({ name: 'movie' })
     },
     GET_ID(state, userData) {
       console.log('아이디랑 유저네임 바뀜')
@@ -62,6 +72,19 @@ export default new Vuex.Store({
         .then((res) => {
           // console.log(res, context)
           context.commit('GET_MOVIES', res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    getRecommendMovies(context) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/movies/${context.state.userName}/recommend/`,
+      })
+        .then((res) => {
+          // console.log(res)
+          context.commit('GET_RECOMMED_MOVIES', res.data)
         })
         .catch((err) => {
           console.log(err)
@@ -92,7 +115,11 @@ export default new Vuex.Store({
       })
         .then((res) => {
           // console.log(res)
-          context.commit('SAVE_TOKEN', res.data.key)
+          context.commit('SAVE_TOKEN_SIGNUP', res.data.key)
+        })
+        .then(() => {
+          // console.log('자동 로그인')
+          context.dispatch('getId')
         })
         .catch((err) => {
           console.log(err)
@@ -108,7 +135,7 @@ export default new Vuex.Store({
         }
       })
         .then((res) => {
-          context.commit('SAVE_TOKEN', res.data.key)
+          context.commit('SAVE_TOKEN_LOGIN', res.data.key)
         })
         .then(() => {
           context.dispatch('getId')

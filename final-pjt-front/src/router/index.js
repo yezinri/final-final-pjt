@@ -4,7 +4,6 @@ import VueRouter from 'vue-router'
 import MovieView from '@/views/MovieView'
 import LoginView from '@/views/LoginView'
 import DetailView from '@/views/DetailView'
-import PreferView from '@/views/PreferView'
 import SignupView from '@/views/SignupView'
 import ProfileView from '@/views/ProfileView'
 import SelectionView from '@/views/SelectionView'
@@ -24,36 +23,39 @@ const routes = [
     component: SignupView
   },
   {
+    path: '/selection',
+    name: 'selection',
+    component: SelectionView
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginView
   },
   {
-    path: '/:id',
+    path: '/:movie_id',
     name: 'detail',
     component: DetailView
-  },
-  {
-    path: '/prefer',
-    name: 'prefer',
-    component: PreferView
   },
   {
     path: '/profile/:username',
     name: 'profile',
     component: ProfileView
   },
-  {
-    path: '/selection',
-    name: 'selection',
-    component: SelectionView
-  },
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  },
 })
 
 export default router
+
