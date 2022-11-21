@@ -1,18 +1,30 @@
 <template>
   <div>
-    <h1>SignupView</h1>
-    <form @submit.prevent="signUp">
-      <label for="username">username : </label>
-      <input type="text" id="username" v-model="username"><br>
+    <div class="container" style="width: 400px; backgrount-color: white;">
+      <h1 class="text-center" style="color: #00ABB3;">Sign Up</h1><br>
+      <hr class="mx-auto" style="color: #00ABB3;">
+      <div class="mx-auto" style="width: 300px;">
+        
+        <form @submit.prevent="signUp">
+          <div class="mb-3">
+            <label for="username" class="form-label">username</label>
+            <input type="text" class="form-control" id="username" v-model="username">
+          </div>
+          <div class="mb-3">
+            <label for="password1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password1" v-model="password1">
+          </div>
+          <div class="mb-3">
+            <label for="password2" class="form-label">Password confirmation</label>
+            <input type="password" class="form-control" id="password2" v-model="password2">
+          </div><br>
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;">Sign Up</button>
+          </div>
+        </form>
 
-      <label for="password1"> password : </label>
-      <input type="password" id="password1" v-model="password1"><br>
-
-      <label for="password2"> password confirmation : </label>
-      <input type="password" id="password2" v-model="password2"><br><br>
-      
-      <input type="submit" value="SignUp">
-    </form>
+      </div>
+    </div>
   </div>
 </template>
 

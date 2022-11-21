@@ -1,13 +1,28 @@
 <template>
-  <div>
-    <h1>Detail</h1>
-    <p v-if="movie">{{ movie.title }}</p>
-    <p v-if="movie">{{ movie.overview }}</p>
-    <button id="like-btn" v-if="!isLike" @click="movieLike">좋아요</button>
-    <button id="like-btn" v-if="isLike" @click="movieLike">좋아요 취소</button>
-    <hr>
-    <ReviewCreate @createReview="getReviews"/>
-    <ReviewList :reviews="reviews" @deleteReview="getReviews"/>
+
+  <div class="container">
+
+    <div v-if="movie" class="container">
+      <div class="row">
+        <img class="col-4" :src="movieSrc" :alt="movie.title">
+        <div class="col-8 d-flex align-content-between flex-wrap">
+          <h2>{{ movie.title }}</h2>
+          <div>
+            <button class="btn btn-primary mb-2" style="background-color: #00ABB3; border: #00ABB3;" id="like-btn" v-if="!isLike" @click="movieLike">좋아요</button>
+            <button class="btn btn-primary mb-2" style="background-color: #00ABB3; border: #00ABB3;" id="like-btn" v-if="isLike" @click="movieLike">좋아요 취소</button>
+            <p>{{ movie.overview }}</p>
+          </div>
+        </div>
+      </div>
+    </div><br>
+
+    <hr><br>
+
+    <div class="container">
+      <ReviewCreate @createReview="getReviews"/>
+      <ReviewList :reviews="reviews" @deleteReview="getReviews"/>
+    </div>
+
   </div>
 </template>
 
@@ -44,6 +59,10 @@ export default {
       set() {
 
       }
+    },
+    movieSrc() {
+      const movieSrc = `https://image.tmdb.org/t/p/original/${this.movie.poster_path}`
+      return movieSrc
     }
   },
   methods: {

@@ -1,10 +1,11 @@
 <template>
   <div>
-    <h3>리뷰 작성</h3>
     <form @submit.prevent="createReview">
-      <label for="content">리뷰 : </label>
-      <textarea type="text" id="content" v-model.trim="content"></textarea>
-      <input type="submit" value="작성">
+      <label class="fs-3 mb-2" for="content">Review</label>
+      <div class="d-flex flex-row">
+        <textarea class="form-control me-1" type="text" id="content" v-model.trim="content" placeholder="리뷰를 작성하세요"></textarea>
+        <input class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" type="submit" value="작성">
+      </div>
     </form>
   </div>
 </template>
