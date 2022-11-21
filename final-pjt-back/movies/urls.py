@@ -9,4 +9,8 @@ urlpatterns = [
     path('<int:movie_pk>/reviews/<int:review_pk>/', views.review_detail),
     path('<int:movie_pk>/reviewcreate/', views.review_create),
     path('<int:movie_pk>/reviews/<int:review_pk>/likes/', views.review_likes),
+
+    path('random_movies/', views.random_movies),
+    # 영화 DB API로 받아오기
+    path('getdb', views.get_db),
 ]
