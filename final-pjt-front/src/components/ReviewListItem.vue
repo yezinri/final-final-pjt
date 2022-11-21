@@ -18,7 +18,7 @@
             :id="'like-btn-' + review.id"
             v-if="isLike" @click="reviewLike"
             class="btn btn-primary me-1" style="background-color: #00ABB3; border: #00ABB3;">좋아요 취소</button>
-          <button class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" @click="deleteReview">삭제</button>
+          <button v-if="userId == review.user" class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" @click="deleteReview">삭제</button>
         </div>
       </div>
       <!-- <star-rating v-model="rating" :increment=0.5 animate=true></star-rating> -->
@@ -70,6 +70,9 @@ export default {
       set() {
 
       }
+    },
+    isLogin() {
+      return this.$store.getters.isLogin
     }
   },
   methods: {
@@ -90,26 +93,31 @@ export default {
         })
     },
     reviewLike() {
-      axios({
-        method: 'post',
-        url: `${API_URL}/movies/${this.$route.params.movie_id}/reviews/${this.review.id}/likes/`,
-        headers: {
-            Authorization: `Token ${ this.$store.state.token }`
-        }
-      })
-        .then((res) => {
-          console.log(res)
-          const likeBtn = document.querySelector(`#like-btn-${this.review.id}`);
-
-          if (res.data.is_like === true) {
-            likeBtn.innerText = '좋아요 취소'
-          } else {
-            likeBtn.innerText = '좋아요'
+      if (this.isLogin) {
+        axios({
+          method: 'post',
+          url: `${API_URL}/movies/${this.$route.params.movie_id}/reviews/${this.review.id}/likes/`,
+          headers: {
+              Authorization: `Token ${ this.$store.state.token }`
           }
         })
-        .catch((err) => {
-          console.log(err)
-        })
+          .then((res) => {
+            console.log(res)
+            const likeBtn = document.querySelector(`#like-btn-${this.review.id}`);
+
+            if (res.data.is_like === true) {
+              likeBtn.innerText = '좋아요 취소'
+            } else {
+              likeBtn.innerText = '좋아요'
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else {
+        alert('로그인이 필요한 서비스입니다.')
+        this.$router.push({ name: 'login' })
+      }
     },
     getId() {
       axios({

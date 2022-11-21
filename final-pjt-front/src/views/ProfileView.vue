@@ -2,7 +2,7 @@
   <div>
     <h2 v-if="userData" style="color: #00ABB3;">{{ userData.username }}</h2><br>
     <LikeMovieList :likeMovies="userData?.like_movies"/><br>
-    <MyReviewList :myReviews="userData?.my_reviews"/>
+    <MyReviewList :myReviews="userData?.my_reviews" @deleteReview="getProfile"/>
   </div>
 </template>
 

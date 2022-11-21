@@ -11,7 +11,7 @@
             <p class="card-text text-secondary">{{ myReview.content }}</p>
           </div>
           <div class="d-flex align-items-center">
-            <button class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;">삭제</button>
+            <button class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" @click="deleteReview">삭제</button>
           </div>
         </div>
       </div>
@@ -21,6 +21,8 @@
 
 <script>
 import axios from 'axios'
+
+const API_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'MyReviewListItem',
@@ -48,7 +50,23 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-    }
+    },
+    deleteReview() {
+      axios({
+        method: 'delete',
+        url: `${API_URL}/movies/${this.myReview.movie_id}/reviews/${this.myReview.id}`,
+        headers: {
+            Authorization: `Token ${ this.$store.state.token }`
+        }
+      })
+        .then((res) => {
+          console.log(res)  
+          this.$emit('deleteReview')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
   }
 
 }

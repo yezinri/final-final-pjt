@@ -5,6 +5,7 @@
       v-for="myReview in myReviews"
       :key="myReview.pk"
       :myReview="myReview"
+      @deleteReview="deleteReview"
     />
   </div>
 </template>
@@ -19,6 +20,11 @@ export default {
   },
   props: {
     myReviews: Array,
+  },
+  methods: {
+    deleteReview() {
+      this.$emit('deleteReview')
+    }
   }
 }
 </script>

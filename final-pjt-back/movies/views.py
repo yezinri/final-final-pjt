@@ -271,7 +271,7 @@ def recommend(request, username):
 
     how_many2 = list(how_many2.items())
     how_many2.sort(key=lambda x: x[1], reverse=True)
-    how_many2 = how_many2[0:10]
+    how_many2 = how_many2[0:12]
     # print(how_many2)
 
 
@@ -279,9 +279,9 @@ def recommend(request, username):
     for id in how_many2:
         recommended_ids.append(id[0])
 
-    print(len(recommended_movies))
+    # print(len(recommended_movies))
     not_redundant_movies = list({recommended_movie['id']: recommended_movie for recommended_movie in recommended_movies}.values())
-    print(len(not_redundant_movies))
+    # print(len(not_redundant_movies))
 
     # # recommended_movies = list(set(recommended_movies))
     final_movies = []
@@ -290,10 +290,30 @@ def recommend(request, username):
             if not_redundant_movie['id'] == id:
                 final_movies.append(not_redundant_movie)
 
-    print(len(final_movies))
+    # print(len(final_movies))
             
 
     context = {
         'final_movies': final_movies
     }
     return Response(context)
+
+@api_view(['GET'])
+def latest_movies(request):
+    latest_movies = []
+    for i in range(1, 4):
+        URL = 'https://api.themoviedb.org/3/movie/now_playing?api_key=a10047aa70542f33ac2138abb4e13bb7&language=ko-KR&page=' + str(i)
+
+        # print(i)  # 그냥 출력 확인용
+        response = requests.get(URL).json()
+        # print(response)
+        movies = response['results']
+        for movie in movies:
+            latest_movies.append(movie)
+        
+    random_latest_movies = random.sample(latest_movies, 12)
+    context = {
+        'random_latest_movies': random_latest_movies
+    }
+
+    return Response(context) 

@@ -63,6 +63,9 @@ export default {
     movieSrc() {
       const movieSrc = `https://image.tmdb.org/t/p/original/${this.movie.poster_path}`
       return movieSrc
+    },
+    isLogin() {
+      return this.$store.getters.isLogin
     }
   },
   methods: {
@@ -95,26 +98,32 @@ export default {
         })
     },
     movieLike() {
-      axios({
-        method: 'post',
-        url: `${API_URL}/movies/${this.$route.params.movie_id}/likes/`,
-        headers: {
-            Authorization: `Token ${ this.$store.state.token }`
-        }
-      })
-        .then((res) => {
-          console.log(res)
-          const likeBtn = document.querySelector('#like-btn')
+      if (this.isLogin) {
 
-          if (res.data.is_like === true) {
-            likeBtn.innerText = '좋아요 취소'
-          } else {
-            likeBtn.innerText = '좋아요'
+        axios({
+          method: 'post',
+          url: `${API_URL}/movies/${this.$route.params.movie_id}/likes/`,
+          headers: {
+              Authorization: `Token ${ this.$store.state.token }`
           }
         })
-        .catch((err) => {
-          console.log(err)
-        })
+          .then((res) => {
+            console.log(res)
+            const likeBtn = document.querySelector('#like-btn')
+  
+            if (res.data.is_like === true) {
+              likeBtn.innerText = '좋아요 취소'
+            } else {
+              likeBtn.innerText = '좋아요'
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else {
+        alert('로그인이 필요한 서비스입니다.')
+        this.$router.push({ name: 'login' })
+      }
     },
   }
 }

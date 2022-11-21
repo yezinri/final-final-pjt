@@ -7,7 +7,6 @@
           <router-link v-if="isLogin" class="nav-link" :to="{ name: 'profile', params: { username: userName } }">Profile</router-link>
           <router-link v-if="!isLogin" class="nav-link" :to="{ name: 'signup' }">Signup</router-link>
           <router-link v-if="!isLogin" class="nav-link" :to="{ name: 'login' }">Login</router-link>
-          <router-link class="nav-link" :to="{ name: 'selection' }">Selection</router-link>
           <span class="nav-link" v-if="isLogin" @click="logOut">Logout</span>
         </div>
       </div>
