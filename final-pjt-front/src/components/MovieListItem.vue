@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h5>{{ movie.title }}</h5>
+      <div class="col">
+        <router-link :to="{ name: 'detail', params: { id: movie.id } }">
+          <img :src="movieSrc" class="card-img-top" :alt="movie.title">
+        </router-link>
+      </div>
+
+    <!-- <h5>{{ movie.title }}</h5>
     <p>{{ movie.id }}</p>
     <button :id="'like-btn-' + movie.id" v-if="!isLike" @click="movieLike">좋아요</button>
     <button :id="'like-btn-' + movie.id" v-if="isLike" @click="movieLike">좋아요 취소</button>
@@ -8,7 +14,8 @@
     <router-link :to="{ name: 'detail', params: { id: movie.id } }">
       [DETAIL]
     </router-link>
-    <hr>
+    <hr> -->
+
   </div>
 </template>
 
@@ -30,6 +37,10 @@ export default {
   computed: {
     isLike() {
       return this.movie.like_users?.includes(this.userId)
+    },
+    movieSrc() {
+      const movieSrc = `https://image.tmdb.org/t/p/original/${this.movie.poster_path}`
+      return movieSrc
     }
   },
   methods: {

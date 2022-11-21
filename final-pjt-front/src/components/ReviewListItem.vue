@@ -1,14 +1,37 @@
 <template>
-  <div>
-    <span><router-link :to="{ name: 'profile', params: { username: review.username } }">{{ review.username }}</router-link></span>
-    <span> : {{ review.content }}</span>
-    <button @click="deleteReview">삭제</button>
-    <button
-      :id="'like-btn-' + review.id"
-      v-if="!isLike" @click="reviewLike">좋아요</button>
-    <button 
-      :id="'like-btn-' + review.id"
-      v-if="isLike" @click="reviewLike">좋아요 취소</button>
+  <div class="my-3">
+    <div class="card">
+      <div class="card-body d-flex flex-row justify-content-between">
+        <div>
+          <h5 class="card-title">
+            <router-link style="text-decoration: none; color: #00ABB3;" :to="{ name: 'profile', params: { username: review.username } }">
+              {{ review.username }}</router-link>
+          </h5>
+          <p class="card-text text-secondary">{{ review.content }}</p>
+        </div>
+        <div class="d-flex align-items-center">
+          <button
+            :id="'like-btn-' + review.id"
+            v-if="!isLike" @click="reviewLike"
+            class="btn btn-primary me-1" style="background-color: #00ABB3; border: #00ABB3;">좋아요</button>
+          <button 
+            :id="'like-btn-' + review.id"
+            v-if="isLike" @click="reviewLike"
+            class="btn btn-primary me-1" style="background-color: #00ABB3; border: #00ABB3;">좋아요 취소</button>
+          <button class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" @click="deleteReview">삭제</button>
+        </div>
+      </div>
+    </div>
+
+      <!-- <span><router-link :to="{ name: 'profile', params: { username: review.username } }">{{ review.username }}</router-link></span>
+      <span> : {{ review.content }}</span>
+      <button @click="deleteReview">삭제</button>
+      <button
+        :id="'like-btn-' + review.id"
+        v-if="!isLike" @click="reviewLike">좋아요</button>
+      <button 
+        :id="'like-btn-' + review.id"
+        v-if="isLike" @click="reviewLike">좋아요 취소</button> -->
   </div>
 </template>
 

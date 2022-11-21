@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p v-if="!reviews">리뷰가 없습니다</p>
     <ReviewListItem
       v-for="review in reviews"
       :key="review.id"
