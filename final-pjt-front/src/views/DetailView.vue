@@ -1,16 +1,16 @@
 <template>
 
-  <div class="container">
+  <div class="container-lg">
 
-    <div v-if="movie" class="container">
+    <div v-if="movie" class="container-lg">
       <div class="row">
         <img class="col-4" :src="movieSrc" :alt="movie.title">
-        <div class="col-8 d-flex align-content-between flex-wrap">
+        <div class="col-8 d-flex flex-column">
           <h2>{{ movie.title }}</h2>
-          <div>
+          <div class="mt-auto">
             <button class="btn btn-primary mb-2" style="background-color: #00ABB3; border: #00ABB3;" id="like-btn" v-if="!isLike" @click="movieLike">좋아요</button>
             <button class="btn btn-primary mb-2" style="background-color: #00ABB3; border: #00ABB3;" id="like-btn" v-if="isLike" @click="movieLike">좋아요 취소</button>
-            <p>{{ movie.overview }}</p>
+            <p class="mb-0 fw-lighter">{{ movie.overview }}</p>
           </div>
         </div>
       </div>
@@ -18,9 +18,9 @@
 
     <hr><br>
 
-    <div class="container">
+    <div class="container-lg">
       <ReviewCreate @createReview="getReviews"/>
-      <ReviewList :reviews="reviews" @deleteReview="getReviews"/>
+      <ReviewList :reviews="reviews" @deleteReview="getReviews" @updateReview="getReviews"/>
     </div>
 
   </div>

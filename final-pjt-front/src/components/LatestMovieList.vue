@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h3>최신 영화</h3><br>
-    <div class="row row-cols-1 row-cols-md-3 row-cols-xl-6 g-4">
+  <div class="mx-3">
+    <h4 class="mb-4">최신 영화</h4>
+    <div class="row row-cols-3 row-cols-xl-6 g-4">
       <LatestMovieListItem
         v-for="latestMovie in latestMovies"
         :key="latestMovie.id"

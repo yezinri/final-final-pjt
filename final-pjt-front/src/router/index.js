@@ -7,6 +7,7 @@ import DetailView from '@/views/DetailView'
 import SignupView from '@/views/SignupView'
 import ProfileView from '@/views/ProfileView'
 import SelectionView from '@/views/SelectionView'
+import SearchView from '@/views/SearchView'
 
 
 Vue.use(VueRouter)
@@ -16,6 +17,11 @@ const routes = [
     path: '/',
     name: 'movie',
     component: MovieView
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: SearchView
   },
   {
     path: '/signup',

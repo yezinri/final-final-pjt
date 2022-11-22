@@ -1,8 +1,8 @@
 <template>
   <div>
-    <RecommendMovieList v-if="isLogin"/><br><br>
+    <RecommendMovieList v-if="isLogin" class="mb-5"/>
     <LatestMovieList/><br>
-    <MovieList v-show="false"/>
+    <MovieList/>
   </div>
 </template>
 
@@ -24,14 +24,14 @@ export default {
     }
   },
   created() {
-    this.getMovies()
+    // this.getMovies()
     this.getRecommendMovies()
     this.getLatestMovies()
   },
   methods: {
-    getMovies() {
-      this.$store.dispatch('getMovies')
-    },
+    // getMovies() {
+    //   this.$store.dispatch('getMovies')
+    // },
     getRecommendMovies() {
       this.$store.dispatch('getRecommendMovies')
     },

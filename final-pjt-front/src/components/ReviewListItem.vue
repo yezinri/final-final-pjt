@@ -7,37 +7,32 @@
             <router-link style="text-decoration: none; color: #00ABB3;" :to="{ name: 'profile', params: { username: review.username } }">
               {{ review.username }}</router-link>
           </h5>
-          <p class="card-text text-secondary">{{ review.content }}</p>
+          <p v-if="!toggleStatus" class="card-text text-secondary">{{ review.content }}</p>
+          <ReviewUpdateForm ref="updateRequest" v-if="toggleStatus" :beforeReview="review" @updateReview="updateReview"/>
         </div>
         <div class="d-flex align-items-center">
-          <button
-            :id="'like-btn-' + review.id"
-            v-if="!isLike" @click="reviewLike"
-            class="btn btn-primary me-1" style="background-color: #00ABB3; border: #00ABB3;">좋아요</button>
-          <button 
-            :id="'like-btn-' + review.id"
-            v-if="isLike" @click="reviewLike"
-            class="btn btn-primary me-1" style="background-color: #00ABB3; border: #00ABB3;">좋아요 취소</button>
+          <div v-if="userId !== review.user">
+            <button
+              :id="'like-btn-' + review.id"
+              v-if="!isLike" @click="reviewLike"
+              class="btn btn-primary me-1" style="background-color: #00ABB3; border: #00ABB3;">좋아요</button>
+            <button 
+              :id="'like-btn-' + review.id"
+              v-if="isLike" @click="reviewLike"
+              class="btn btn-primary me-1" style="background-color: #00ABB3; border: #00ABB3;">좋아요 취소</button>
+          </div>
+          <button id="updateBtn" v-if="userId == review.user" class="btn btn-primary me-1" style="background-color: #00ABB3; border: #00ABB3;" @click="toggleOnOff">수정</button>
           <button v-if="userId == review.user" class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" @click="deleteReview">삭제</button>
         </div>
       </div>
       <!-- <star-rating v-model="rating" :increment=0.5 animate=true></star-rating> -->
     </div>
-
-      <!-- <span><router-link :to="{ name: 'profile', params: { username: review.username } }">{{ review.username }}</router-link></span>
-      <span> : {{ review.content }}</span>
-      <button @click="deleteReview">삭제</button>
-      <button
-        :id="'like-btn-' + review.id"
-        v-if="!isLike" @click="reviewLike">좋아요</button>
-      <button 
-        :id="'like-btn-' + review.id"
-        v-if="isLike" @click="reviewLike">좋아요 취소</button> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import ReviewUpdateForm from '@/components/ReviewUpdateForm'
 // import StarRating from 'vue-star-rating'
 
 const API_URL = 'http://127.0.0.1:8000'
@@ -50,10 +45,12 @@ export default {
   data() {
     return {
       userId: null,
+      toggleStatus: false,
       // rating: 0,
     }
   },
-  compunted: {
+  components: {
+    ReviewUpdateForm,
   },
   props: {
     review: Object,
@@ -91,6 +88,22 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    updateReview() {
+      this.toggleStatus = !this.toggleStatus
+      this.$emit('updateReview')
+    },
+    toggleOnOff() {
+      const updateBtn = document.querySelector('#updateBtn')
+
+      if (!this.toggleStatus) {
+        updateBtn.innerText = '수정 완료'
+      } else {
+        updateBtn.innerText = '수정'
+        this.$refs.updateRequest.updateReview('')
+      }
+
+      this.toggleStatus = !this.toggleStatus
     },
     reviewLike() {
       if (this.isLogin) {

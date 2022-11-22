@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="container" style="width: 400px; backgrount-color: white;">
-      <h1 class="text-center" style="color: #00ABB3;">Sign Up</h1><br>
-      <hr class="mx-auto" style="color: #00ABB3;">
-      <div class="mx-auto" style="width: 300px;">
+      <h2 class="text-center" style="color: #00ABB3;">Sign Up</h2>
+      <hr class="mx-auto" style="width: 50px; border: 0; height: 5px; background: #00ABB3;">
+      <div class="mx-auto" style="width: 250px;">
         
         <form @submit.prevent="signUp">
           <div class="mb-3">

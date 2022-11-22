@@ -4,15 +4,18 @@
       <div class="container-fluid px-4 py-2">
         <router-link class="navbar-brand fs-2" style="color: #00ABB3;" :to="{ name: 'movie' }">whyisitreal</router-link>
         <div class="navbar-nav">
-          <router-link v-if="isLogin" class="nav-link" :to="{ name: 'profile', params: { username: userName } }">Profile</router-link>
           <router-link v-if="!isLogin" class="nav-link" :to="{ name: 'signup' }">Signup</router-link>
           <router-link v-if="!isLogin" class="nav-link" :to="{ name: 'login' }">Login</router-link>
           <span class="nav-link" v-if="isLogin" @click="logOut">Logout</span>
+          <router-link v-if="isLogin" class="nav-link fw-bold" style="color: #00ABB3;" :to="{ name: 'profile', params: { username: userName } }">{{ userName }}</router-link>
+          <form class="d-flex ms-2" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" @keyup="searchMovie">
+          </form>
         </div>
       </div>
     </nav>
 
-    <div class="container">
+    <div class="container-lg">
       <router-view/>
     </div>
 
@@ -25,13 +28,18 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+const API_URL = 'http://127.0.0.1:8000'
+
 export default {
   name: 'App',
-  // data() {
-  //   return {
-  //     userName: this.$store.state.userName
-  //   }
-  // },
+  data() {
+    return {
+      // userName: this.$store.state.userName,
+      // searchword: null,
+    }
+  },
   computed: {
     isLogin() {
       return this.$store.getters.isLogin
@@ -44,6 +52,22 @@ export default {
     logOut() {
       this.$store.dispatch('logOut')
       // this.$router.push({ name: 'movie' })
+    },
+    searchMovie(event) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/movies/search/${event.target.value}/`,
+      })
+        .then((res) => {
+          if (this.$route.path !== '/search') {
+            this.$router.push({ name: 'search' })
+          }
+          this.$store.commit('SEARCH_MOVIE', [res.data, event.target.value])
+          // console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }

@@ -15,7 +15,7 @@ export default new Vuex.Store({
     createPersistedState()
   ],
   state: {
-    movies: [],
+    // movies: [],
     reviews: [],
     token: null,
     userId: null,
@@ -23,6 +23,8 @@ export default new Vuex.Store({
     randomMovies: null,
     recommendedMovies: null,
     latestMovies: null,
+    searchMovies: null,
+    searchWord: null,
   },
   getters: {
     isLogin(state) {
@@ -66,22 +68,26 @@ export default new Vuex.Store({
     GET_LATEST_MOVIES(state, latestMovies) {
       // console.log(latestMovies)
       state.latestMovies = latestMovies
+    },
+    SEARCH_MOVIE(state, data) {
+      state.searchMovies = data[0]
+      state.searchWord = data[1]
     }
   },
   actions: {
-    getMovies(context) {
-      axios({
-        method: 'get',
-        url: `${API_URL}/movies/`,
-      })
-        .then((res) => {
-          // console.log(res, context)
-          context.commit('GET_MOVIES', res.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
+    // getMovies(context) {
+    //   axios({
+    //     method: 'get',
+    //     url: `${API_URL}/movies/`,
+    //   })
+    //     .then((res) => {
+    //       // console.log(res, context)
+    //       context.commit('GET_MOVIES', res.data)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
     getRecommendMovies(context) {
       axios({
         method: 'get',
