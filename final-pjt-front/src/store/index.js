@@ -15,13 +15,18 @@ export default new Vuex.Store({
     createPersistedState()
   ],
   state: {
-    movies: [],
+    // movies: [],
     reviews: [],
     token: null,
     userId: null,
     userName: null,
     randomMovies: null,
     recommendedMovies: null,
+    latestMovies: null,
+    searchMovies: null,
+    searchWord: null,
+    backdropPath: null,
+    todayMovie: null,
   },
   getters: {
     isLogin(state) {
@@ -61,22 +66,37 @@ export default new Vuex.Store({
     RANDOM_MOVIES(state, randomMovies) {
       console.log('드디어 랜덤영화왔다..')
       state.randomMovies = randomMovies['random_top_movies']
+    },
+    GET_LATEST_MOVIES(state, latestMovies) {
+      // console.log(latestMovies)
+      state.latestMovies = latestMovies
+    },
+    SEARCH_MOVIE(state, data) {
+      state.searchMovies = data[0]
+      state.searchWord = data[1]
+    },
+    CHANGE_BACKGROUND(state, backdrop_path) {
+      state.backdropPath = backdrop_path
+    },
+    TODAY_MOVIE(state, todayMovie) {
+      console.log(todayMovie)
+      state.todayMovie = todayMovie
     }
   },
   actions: {
-    getMovies(context) {
-      axios({
-        method: 'get',
-        url: `${API_URL}/movies/`,
-      })
-        .then((res) => {
-          // console.log(res, context)
-          context.commit('GET_MOVIES', res.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    },
+    // getMovies(context) {
+    //   axios({
+    //     method: 'get',
+    //     url: `${API_URL}/movies/`,
+    //   })
+    //     .then((res) => {
+    //       // console.log(res, context)
+    //       context.commit('GET_MOVIES', res.data)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // },
     getRecommendMovies(context) {
       axios({
         method: 'get',
@@ -176,13 +196,38 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/random_movies/`,
       })
         .then((res) => {
-        console.log(res)
-        context.commit('RANDOM_MOVIES', res.data)
+          console.log(res)
+          context.commit('RANDOM_MOVIES', res.data)
         })
         .catch((err) => {
-        console.log(err)
+          console.log(err)
         })
     },
+    getLatestMovies(context) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/movies/latest_movies/`,
+      })
+        .then((res) => {
+          context.commit('GET_LATEST_MOVIES', res.data.random_latest_movies)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    getTodayMovie(context) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/movies/today_movie/`,
+      })
+        .then((res) => {
+          // console.log(res.data)
+          context.commit('TODAY_MOVIE', res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   },
   modules: {
   }

@@ -1,28 +1,28 @@
 <template>
   <div>    
     <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4">
-      <MovieListItem
+      <!-- <MovieListItem
         v-for="movie in movies"
         :key="movie.id"
         :movie="movie"
-      />
+      /> -->
     </div>
   </div>
   
 </template>
 
 <script>
-import MovieListItem from '@/components/MovieListItem'
+// import MovieListItem from '@/components/MovieListItem'
 
 export default {
   name: 'MovieList',
   components: {
-    MovieListItem,
+    // MovieListItem,
   },
   computed: {
-    movies() {
-      return this.$store.state.movies
-    }
+    // movies() {
+    //   return this.$store.state.movies
+    // }
   }
   
 }

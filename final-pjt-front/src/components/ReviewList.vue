@@ -5,6 +5,7 @@
       :key="review.id"
       :review="review"
       @deleteReview="deleteReview"
+      @updateReview="updateReview"
     />
   </div>
 </template>
@@ -23,6 +24,9 @@ export default {
   methods: {
     deleteReview() {
       this.$emit('deleteReview')
+    },
+    updateReview() {
+      this.$emit('updateReview')
     }
   }
 }

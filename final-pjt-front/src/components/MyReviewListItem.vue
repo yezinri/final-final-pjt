@@ -2,7 +2,7 @@
   <div>
     <div class="my-3">
       <div class="card">
-        <div class="card-body d-flex flex-row justify-content-between">
+        <div class="card-body d-flex flex-row justify-content-between shadow">
           <div>
             <h5 class="card-title">
               <router-link v-if="movieTitle" style="text-decoration: none; color: #00ABB3;" :to="{ name: 'detail', params: { movie_id: myReview.movie_id } }">
@@ -11,7 +11,7 @@
             <p class="card-text text-secondary">{{ myReview.content }}</p>
           </div>
           <div class="d-flex align-items-center">
-            <button class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;">삭제</button>
+            <!-- <button class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" @click="deleteReview">삭제</button> -->
           </div>
         </div>
       </div>
@@ -22,6 +22,8 @@
 <script>
 import axios from 'axios'
 
+const API_URL = 'http://127.0.0.1:8000'
+
 export default {
   name: 'MyReviewListItem',
   props: {
@@ -30,6 +32,7 @@ export default {
   data() {
     return {
       movieTitle: null,
+      userId: this.$store.state.userId,
     }
   },
   created() {
@@ -48,12 +51,30 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-    }
+    },
+    deleteReview() {
+      axios({
+        method: 'delete',
+        url: `${API_URL}/movies/${this.myReview.movie_id}/reviews/${this.myReview.id}`,
+        headers: {
+            Authorization: `Token ${ this.$store.state.token }`
+        }
+      })
+        .then((res) => {
+          console.log(res)  
+          this.$emit('deleteReview')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
   }
 
 }
 </script>
 
 <style>
-
+.shadow{
+  box-shadow: 0 17px 20px -18px rgba(0, 0, 0, 1);    
+}
 </style>

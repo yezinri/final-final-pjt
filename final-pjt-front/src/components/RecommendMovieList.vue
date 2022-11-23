@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <h3>좋아요 기반 추천 영화</h3><br>
-    <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-4">
+  <div class="mx-3">
+    <h4 class="mb-4">좋아요 기반 추천 영화</h4>
+    <div class="hover-container g-4">
       <RecommendMovieListItem
         v-for="recommendMovie in recommendMovies"
         :key="recommendMovie.id"
         :recommendMovie="recommendMovie"
+        class="item"
       />
     </div>
   </div>
@@ -28,5 +29,6 @@ export default {
 </script>
 
 <style>
+
 
 </style>
