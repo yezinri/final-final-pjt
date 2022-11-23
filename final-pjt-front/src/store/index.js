@@ -25,6 +25,7 @@ export default new Vuex.Store({
     latestMovies: null,
     searchMovies: null,
     searchWord: null,
+    backdropPath: null,
   },
   getters: {
     isLogin(state) {
@@ -72,6 +73,9 @@ export default new Vuex.Store({
     SEARCH_MOVIE(state, data) {
       state.searchMovies = data[0]
       state.searchWord = data[1]
+    },
+    CHANGE_BACKGROUND(state, backdrop_path) {
+      state.backdropPath = backdrop_path
     }
   },
   actions: {

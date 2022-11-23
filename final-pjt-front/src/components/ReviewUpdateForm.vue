@@ -4,7 +4,7 @@
       <!-- <label class="fs-3 mb-2" for="content">Review Update</label> -->
       <div class="d-flex flex-row">
         <input class="form-control me-1" type="text" id="content" v-model.trim="content">
-        <!-- <input class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" type="submit" value="수정 완료"> -->
+        <input class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" type="submit" value="수정 완료">
       </div>
     </form>
   </div>
@@ -42,8 +42,9 @@ export default {
         }
       })
         .then((res) => {
-          console.log(res)
+          console.log('실행')
           this.$emit('updateReview')
+          console.log(res)
         })
         .catch((err) => {
           console.log(err)

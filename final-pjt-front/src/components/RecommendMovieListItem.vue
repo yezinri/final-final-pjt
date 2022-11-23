@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="col">
+    <div>
       <router-link :to="{ name: 'detail', params: { movie_id: recommendMovie.id } }">
         <img :src="movieSrc" class="card-img-top" :alt="recommendMovie.title">
       </router-link>

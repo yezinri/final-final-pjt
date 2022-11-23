@@ -8,7 +8,7 @@
               {{ review.username }}</router-link>
           </h5>
           <p v-if="!toggleStatus" class="card-text text-secondary">{{ review.content }}</p>
-          <ReviewUpdateForm ref="updateRequest" v-if="toggleStatus" :beforeReview="review" @updateReview="updateReview"/>
+          <ReviewUpdateForm v-if="toggleStatus" :beforeReview="review" @updateReview="updateReview" />
         </div>
         <div class="d-flex align-items-center">
           <div v-if="userId !== review.user">
@@ -90,17 +90,18 @@ export default {
         })
     },
     updateReview() {
-      this.toggleStatus = !this.toggleStatus
+      this.toggleOnOff()
+      console.log('에밋 성공')
       this.$emit('updateReview')
     },
     toggleOnOff() {
       const updateBtn = document.querySelector('#updateBtn')
 
       if (!this.toggleStatus) {
-        updateBtn.innerText = '수정 완료'
+        updateBtn.innerText = '수정 취소'
       } else {
         updateBtn.innerText = '수정'
-        this.$refs.updateRequest.updateReview('')
+        // this.$refs.updateRequest.updateReview('')
       }
 
       this.toggleStatus = !this.toggleStatus

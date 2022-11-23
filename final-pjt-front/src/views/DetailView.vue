@@ -1,12 +1,19 @@
 <template>
 
-  <div class="container-lg">
+  <div style="height: 100%;" class="container-lg">
 
-    <div v-if="movie" class="container-lg">
+    <div v-if="movie" class="container-lg" style="height: 100%;">
       <div class="row">
         <img class="col-4" :src="movieSrc" :alt="movie.title">
         <div class="col-8 d-flex flex-column">
-          <h2>{{ movie.title }}</h2>
+          <div>
+            <h1>{{ movie.title }}</h1>
+            <p class="fw-lighter">{{ movie.release_date }}</p>
+            <p class="fw-lighter">평점★ {{ movie.vote_average }}</p>
+            <span v-for="genre in movie.genre_ids" :key="genre">
+              {{ genres[genre] }}
+            </span>
+          </div>
           <div class="mt-auto">
             <button class="btn btn-primary mb-2" style="background-color: #00ABB3; border: #00ABB3;" id="like-btn" v-if="!isLike" @click="movieLike">좋아요</button>
             <button class="btn btn-primary mb-2" style="background-color: #00ABB3; border: #00ABB3;" id="like-btn" v-if="isLike" @click="movieLike">좋아요 취소</button>
@@ -45,6 +52,27 @@ export default {
       movie: null,
       reviews: null,
       userId: this.$store.state.userId,
+      genres: {
+        28: "액션",
+        12: "모험",
+        16: "애니메이션",
+        35: "코미디",
+        80: "범죄",
+        99: "다큐멘터리",
+        18: "드라마",
+        10751: "가족",
+        14: "판타지",
+        36: "역사",
+        27: "공포",
+        10402: "음악",
+        9648: "미스터리",
+        10749: "로맨스",
+        878: "SF",
+        10770: "TV 영화",
+        53: "스릴러",
+        10752: "전쟁",
+        37: "서부"
+      },
     }
   },
   created() {
@@ -77,6 +105,9 @@ export default {
         .then((res) => {
           // console.log(res.data)
           this.movie = res.data
+        })
+        .then(() => {
+          this.$store.commit('CHANGE_BACKGROUND', this.movie.backdrop_path)
         })
         .catch((err) => {
           console.log(err)
