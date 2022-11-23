@@ -2,7 +2,9 @@
   <div>
     <div>
       <router-link :to="{ name: 'detail', params: { movie_id: recommendMovie.id } }">
-        <img :src="movieSrc" class="card-img-top" :alt="recommendMovie.title">
+        <div class="swiper-slide">
+          <img :src="movieSrc" class="card-img-top" :alt="recommendMovie.title">
+        </div>
       </router-link>
     </div>
   </div>

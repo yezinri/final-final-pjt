@@ -1,6 +1,6 @@
 <template>
 
-  <div style="height: 100%;" class="container-lg">
+  <div class="container-lg" style="height: 100%;">
 
     <div v-if="movie" class="container-lg" style="height: 100%;">
       <div class="row">
