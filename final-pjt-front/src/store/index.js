@@ -64,7 +64,7 @@ export default new Vuex.Store({
       state.userName = userData.username
     },
     RANDOM_MOVIES(state, randomMovies) {
-      console.log('드디어 랜덤영화왔다..')
+      // console.log('드디어 랜덤영화왔다..')
       state.randomMovies = randomMovies['random_top_movies']
     },
     GET_LATEST_MOVIES(state, latestMovies) {
@@ -190,13 +190,12 @@ export default new Vuex.Store({
         })
     },
     randomMovies(context) {
-      console.log('actions')
+      // console.log('actions')
       axios({
         method: 'get',
         url: `${API_URL}/movies/random_movies/`,
       })
         .then((res) => {
-          console.log(res)
           context.commit('RANDOM_MOVIES', res.data)
         })
         .catch((err) => {

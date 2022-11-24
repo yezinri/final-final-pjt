@@ -143,8 +143,6 @@ def random_movies(request):
     print(len(selected_top_movies))
             
 
-
-
     random_top_movies = random.sample(selected_top_movies, 42)           # 일단 랜덤으로 42개의 영화를 가져옴
     selected_genres = []                                        # 랜덤으로 가져온 42개의 영화의 장르를 넣어줄 리스트
     for random_top_movie in random_top_movies:
@@ -326,6 +324,7 @@ def recommend(request, username):
         'final_movies': final_movies
     }
     return Response(context)
+
 
 # 영화 detail 페이지에 보여줄 추천/관련 영화 리스트 (11.23 민혁추가)
 @api_view(['GET'])

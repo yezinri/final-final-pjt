@@ -23,7 +23,6 @@ export default {
   },
   computed: {
     randomMovies() {
-      console.log(this.$store.state.randomMovies)
       return this.$store.state.randomMovies
     }
   },

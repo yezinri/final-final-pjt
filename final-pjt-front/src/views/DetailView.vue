@@ -1,6 +1,6 @@
 <template>
 
-  <div style="height: 100%;" class="container-lg">
+  <div class="container-lg" style="height: 100%;">
 
     <div v-if="movie" class="container-lg" style="height: 100%;">
       <div class="row">
@@ -26,6 +26,7 @@
     <hr><br>
 
     <div class="container-lg">
+
       <SimilarMovieList :similarMovies="similarMovies"/>
       <ReviewCreate @createReview="getReviews"/>
       <ReviewList :reviews="reviews" @deleteReview="getReviews" @updateReview="getReviews"/>
