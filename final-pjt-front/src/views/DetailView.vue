@@ -26,6 +26,8 @@
     <hr><br>
 
     <div class="container-lg">
+
+      <SimilarMovieList :similarMovies="similarMovies"/>
       <ReviewCreate @createReview="getReviews"/>
       <ReviewList :reviews="reviews" @deleteReview="getReviews" @updateReview="getReviews"/>
     </div>
@@ -40,12 +42,14 @@ const API_URL = 'http://127.0.0.1:8000'
 
 import ReviewList from '@/components/ReviewList'
 import ReviewCreate from '@/components/ReviewCreate'
+import SimilarMovieList from '@/components/SimilarMovieList'
 
 export default {
   name: 'DetailView',
   components: {
     ReviewList,
     ReviewCreate,
+    SimilarMovieList,
   },
   data() {
     return {
@@ -73,10 +77,12 @@ export default {
         10752: "전쟁",
         37: "서부"
       },
+      similarMovies: null,
     }
   },
   created() {
     this.getMovieDetail()
+    this.getSimilarMovies()
     this.getReviews()
   },
   computed: {
@@ -155,6 +161,21 @@ export default {
         alert('로그인이 필요한 서비스입니다.')
         this.$router.push({ name: 'login' })
       }
+    },
+    getSimilarMovies() {    // 11.23 민혁 추가
+      axios({
+        method: 'get',
+        url: `${API_URL}/movies/${this.$route.params.movie_id}/similar_movies/`,
+      })
+        .then((res) => {
+          console.log(res.data)
+          this.similarMovies = res.data.random_similar_movies
+        })
+        .catch((err) => {
+          if (err.response.status === 404) {
+            this.similarMovies = null
+          }
+        })
     },
   }
 }

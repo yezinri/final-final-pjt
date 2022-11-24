@@ -143,8 +143,6 @@ def random_movies(request):
     print(len(selected_top_movies))
             
 
-
-
     random_top_movies = random.sample(selected_top_movies, 42)           # 일단 랜덤으로 42개의 영화를 가져옴
     selected_genres = []                                        # 랜덤으로 가져온 42개의 영화의 장르를 넣어줄 리스트
     for random_top_movie in random_top_movies:
@@ -328,6 +326,31 @@ def recommend(request, username):
     return Response(context)
 
 
+# 영화 detail 페이지에 보여줄 추천/관련 영화 리스트 (11.23 민혁추가)
+@api_view(['GET'])
+def similar_movies(request, movie_pk):
+
+    similar_movies = []
+    for i in range(1, 3):
+        URL = 'https://api.themoviedb.org/3/movie/' + str(movie_pk) + '/recommendations?api_key=a10047aa70542f33ac2138abb4e13bb7&language=ko-KR&page=' + str(i)
+        response = requests.get(URL).json()
+        movies = response['results']
+        for movie in movies:
+            if movie  not in similar_movies:    # 페이지 url에서 가져오면서 간혹 중복되는 경우가 있음
+                similar_movies.append(movie)
+
+    # print(similar_movies)
+    # print(len(similar_movies))
+
+    random_similar_movies = random.sample(similar_movies, 12)
+    # print(random_similar_movies)
+    # print(len(random_similar_movies))
+    
+    context = {
+        'random_similar_movies': random_similar_movies
+    }
+    return Response(context)
+
 
 # 최신영화 추천 및 DB 저장 알고리즘
 @api_view(['GET'])
@@ -383,3 +406,40 @@ def latest_movies(request):
     }
 
     return Response(context) 
+
+
+from datetime import date
+
+@api_view(['GET'])
+def today_movie(request):
+
+    today = int(date.today().strftime('%Y%m%d'))    # 오늘 날짜를 str형태로 받아와서 int로 바꾸어줌 e.g) 20221124
+
+    movies = get_list_or_404(Movie)                 # 영화 전체 DB 가져옴
+
+    cnt = 1                                         # 영화 id와 정확히 일치하지 않을 수 있으니 그냥 7번 기회를 줌
+    while cnt < 8:
+        coincidence = 0                             # 영화 id와 today 숫자가 일치하는가?
+        for movie in movies:
+            if movie.movie_id == today:
+                coincidence += 1
+                break                               # 일치하면 for문 종료       
+        
+        if coincidence > 0:                         # 일치하면 while문 종료
+            break
+
+        today = (today // 10) + 96                  # 일치하지 않으면 그냥 10으로나는 몫에 96 더해줌 (그냥 우리가 96년생이어서임)
+        cnt += 1
+
+    if cnt > 8:                                     # 기회 7번 날리면
+        today = 274                                 # 그냥 손민혁이 제일 좋아하는 영화인 양들의 침묵 보는거다.. (한니발 존멋)
+
+    # print(cnt)
+    # print(coincidence)
+    # print(today)
+
+    today_movie = get_object_or_404(Movie, movie_id=today)
+ 
+    serializer = MovieSerializer(today_movie)
+
+    return Response(serializer.data)

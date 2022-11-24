@@ -15,6 +15,7 @@ export default new Vuex.Store({
     createPersistedState()
   ],
   state: {
+    // movies: [],
     reviews: [],
     token: null,
     userId: null,
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     searchMovies: null,
     searchWord: null,
     backdropPath: null,
+    todayMovie: null,
   },
   getters: {
     isLogin(state) {
@@ -75,6 +77,10 @@ export default new Vuex.Store({
     },
     CHANGE_BACKGROUND(state, backdrop_path) {
       state.backdropPath = backdrop_path
+    },
+    TODAY_MOVIE(state, todayMovie) {
+      console.log(todayMovie)
+      state.todayMovie = todayMovie
     }
   },
   actions: {
@@ -190,7 +196,6 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/random_movies/`,
       })
         .then((res) => {
-          // console.log(res)
           context.commit('RANDOM_MOVIES', res.data)
         })
         .catch((err) => {
@@ -203,8 +208,20 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/latest_movies/`,
       })
         .then((res) => {
-          context.commit('GET_LATEST_MOVIES', res.data.random_latest_movies
-          )
+          context.commit('GET_LATEST_MOVIES', res.data.random_latest_movies)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    getTodayMovie(context) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/movies/today_movie/`,
+      })
+        .then((res) => {
+          // console.log(res.data)
+          context.commit('TODAY_MOVIE', res.data)
         })
         .catch((err) => {
           console.log(err)
