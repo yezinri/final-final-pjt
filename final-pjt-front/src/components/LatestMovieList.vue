@@ -63,4 +63,8 @@ export default {
   display: block;
   max-width: 100%;
 }
+
+.item:hover .like-btn {
+  display: block;
+}
 </style>

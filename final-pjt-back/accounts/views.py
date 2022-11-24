@@ -18,6 +18,7 @@ def profile(request, username):
     person = get_object_or_404(get_user_model(), username=username)
     print(person.review_set.all())
     context = {
+        'userid': person.id,
         'username': person.username,
         'first_name': person.first_name,
         'last_name': person.last_name,

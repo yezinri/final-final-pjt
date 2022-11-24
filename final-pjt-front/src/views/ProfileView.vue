@@ -34,7 +34,7 @@ export default {
         url: `${API_URL}/accounts/profile/${this.$route.params.username}/`
       })
         .then((res) => {
-          // console.log(res.data)
+          console.log(res)
           this.userData = res.data
         })
         .catch((err) => {

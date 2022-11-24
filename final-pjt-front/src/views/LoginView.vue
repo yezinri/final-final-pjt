@@ -44,6 +44,10 @@ export default {
         password: password,
       }
       this.$store.dispatch('logIn', payload)
+
+      this.username = null
+      this.password = null
+
     },
   }
 }

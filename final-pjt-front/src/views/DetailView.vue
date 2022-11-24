@@ -27,9 +27,9 @@
 
     <div class="container-lg">
 
-      <SimilarMovieList :similarMovies="similarMovies"/>
+      <SimilarMovieList :similarMovies="similarMovies"/><br><br>
       <ReviewCreate @createReview="getReviews"/>
-      <ReviewList :reviews="reviews" @deleteReview="getReviews" @updateReview="getReviews"/>
+      <ReviewList :reviews="reviews" @deleteReview="getReviews" @updateReview="getReviews"/><br>
     </div>
 
   </div>

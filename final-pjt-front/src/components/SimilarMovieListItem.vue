@@ -1,8 +1,13 @@
 <template>
-    <div :v-if="similarMovie">
-      <div>{{ similarMovie.title }}</div>
-      <!-- <img :src="movieSrc" :alt="similarMovie.title"> -->
+  <div>
+    <div>
+      <router-link :to="{ name: 'detail', params: { movie_id: similarMovie.id } }">
+        <div class="swiper-slide">
+          <img :src="movieSrc" class="card-img-top" :alt="similarMovie.title">
+        </div>
+      </router-link>
     </div>
+  </div>
 </template>
 
 <script>

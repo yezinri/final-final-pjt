@@ -1,11 +1,14 @@
 <template>
   <div>
-    <h3>비슷한 영화</h3>
-    <SimilarMovieListItem
-      v-for="similarMovie in similarMovies"
-      :key="similarMovie.id"
-      :similarMovie="similarMovie"
-    />
+    <h4 class="mb-4">비슷한 영화</h4>
+    <div class="hover-container g-4">
+      <SimilarMovieListItem
+        v-for="similarMovie in similarMovies"
+        :key="similarMovie.id"
+        :similarMovie="similarMovie"
+        class="item"
+      />
+    </div>
   </div>
 </template>
 

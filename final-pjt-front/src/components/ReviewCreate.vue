@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="createReview">
-      <label class="fs-3 mb-2" for="content">Review</label>
+      <h4 class="mb-4" for="content">모든 리뷰</h4>
       <div class="d-flex flex-row">
         <textarea class="form-control me-1" type="text" id="content" v-model.trim="content" placeholder="리뷰를 작성하세요"></textarea>
         <input class="btn btn-primary" style="background-color: #00ABB3; border: #00ABB3;" type="submit" value="작성">

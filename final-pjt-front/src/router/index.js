@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import MainView from '@/views/MainView'
 import MovieView from '@/views/MovieView'
 import LoginView from '@/views/LoginView'
 import DetailView from '@/views/DetailView'
@@ -15,6 +16,11 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'main',
+    component: MainView
+  },
+  {
+    path: '/movie',
     name: 'movie',
     component: MovieView
   },

@@ -65,6 +65,9 @@ export default {
         url: `${API_URL}/movies/search/${event.target.value}/`,
       })
         .then((res) => {
+          if (event.target.value == '') {
+            this.$router.push({ name: 'home' })
+          }
           if (this.$route.path !== '/search') {
             this.$router.push({ name: 'search' })
           }

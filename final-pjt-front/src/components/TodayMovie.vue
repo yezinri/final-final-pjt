@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <h2>{{ todayMovie.title }}</h2>
-    <img :src="movieSrc" :alt="todayMovie.title">
+  <div class="mx-3">
+    <!-- <div class="row">
+      <h4 class="mb-4">오늘의 영화</h4>
+      <img class="col-4 mt-0 g-4" style="height: 10%" :src="movieSrc" :alt="todayMovie.title">
+    </div> -->
   </div>
 </template>
 
@@ -13,8 +15,8 @@ export default {
       return this.$store.state.todayMovie
     },
     movieSrc() {
-    const movieSrc = `https://image.tmdb.org/t/p/original/${this.todayMovie.poster_path}`
-    return movieSrc
+      const movieSrc = `https://image.tmdb.org/t/p/original/${this.todayMovie.poster_path}`
+      return movieSrc
     },
   },
 

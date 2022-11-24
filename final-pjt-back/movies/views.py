@@ -112,8 +112,15 @@ def movie_likes(request, movie_pk):
 
 @api_view(['GET'])
 def search(request, searchword):
-    search_movies = Movie.objects.filter(title__contains=searchword)
-    serializer = MovieSerializer(search_movies, many=True)
+    searchword = set(searchword)
+    print(searchword)
+    search_movies = Movie.objects.all()
+    result = []
+    for search_movie in search_movies:
+        if set(search_movie.title) & searchword == searchword:
+            result.append(search_movie)
+            serializer = MovieSerializer(result, many=True)
+
     return Response(serializer.data)
 
 

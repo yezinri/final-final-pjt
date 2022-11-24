@@ -79,7 +79,7 @@ export default new Vuex.Store({
       state.backdropPath = backdrop_path
     },
     TODAY_MOVIE(state, todayMovie) {
-      console.log(todayMovie)
+      // console.log(todayMovie)
       state.todayMovie = todayMovie
     }
   },
@@ -159,6 +159,9 @@ export default new Vuex.Store({
         })
         .then(() => {
           context.dispatch('getId')
+        })
+        .catch(() => {
+          alert('아이디 또는 비밀번호를 확인하세요')
         })
     },
     logOut(context) {

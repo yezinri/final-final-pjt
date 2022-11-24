@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TodayMovie/>
+    <TodayMovie class="mb-5"/>
     <RecommendMovieList v-if="isLogin" class="mb-5"/>
     <LatestMovieList/><br>
     <MovieList/>
