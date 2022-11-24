@@ -4,7 +4,8 @@ from rest_framework.decorators import api_view
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import get_user_model
 
-from .models import User
+from .models import User, ProfileImage
+from .forms import ProfileImageForm
 
 import requests
 import json
@@ -29,46 +30,48 @@ def profile(request, username):
     }
     return Response(context)
 
-# # 영화 추천 함수
-# @api_view(['GET', 'POST'])
-# def recommend(request, username):
 
-#     person = get_object_or_404(get_user_model(), username=username)
+# 11.24 민혁 추가 special thanks to David.U
+@api_view(['POST'])
+def profile_image(request, user_id):
 
-#     liked_movies_id_list = []
-#     for like_movies in person.like_movies.all():                # 요게 핵심..
-#         liked_movies_id_list.append(like_movies.movie_id)
-#         # print(like_movies.movie_id)
-#     print(liked_movies_id_list)
+    # 프로필 이미지 조회
+    if request.method == 'GET':
+        image = get_object_or_404(ProfileImage, user=user_id)
+        return Response(image)
 
-#     how_many = []                       # 추천된 영화 id 목록
-#     for liked_movies_id in liked_movies_id_list:
-#         for i in range(1, 3):
-#             URL = 'https://api.themoviedb.org/3/movie/' + str(liked_movies_id) + '/recommendations?api_key=a10047aa70542f33ac2138abb4e13bb7&language=ko-KR&page=' + str(i)
-#             response = requests.get(URL).json()
-#             movies = response['results']
+    # 프로필 이미지 설정
+    elif request.method == 'POST':
+        form = ProfileImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = get_user_model()
+            user = user.objects.get(pk=user_id)
+            image_saved = form.save(commit=False)
+            image_saved.user = user
+            image_saved.save()
+            return Response({'result': 'success'}) # 그냥 Response 해줘야해서 추가한 값
+            
+    # 프로필 이미지 수정
+    elif request.method == 'PUT':
+        profile_image = get_object_or_404(ProfileImage, user=user_id)
+        form = ProfileImageForm(request.POST, request.FILES, instance=profile_image)
+        if form.is_valid():
+            form.save()
+            return Response({'result': 'success'})
 
-#             # pprint(movies)
- 
-#             for movie in movies:
-#                 how_many.append(movie) 
+@api_view(['GET'])   
+def show_image(request, user_id):
+    
+    profile_image = get_object_or_404(ProfileImage, user=user_id)
+    # print(type(str(profile_image.profile_image)), '**************')
+    # print(profile_image.profile_image)
 
-#             how_many =  list(set(how_many))
-#             random_recommendation_movies = random.sample(how_many, 10)
+    profile_image = str(profile_image.profile_image)
+    # print(profile_image, '**************************')
 
-#     # print(how_many)
-#     # 여기서부터 어떻게 가장 많은 순서대로 정렬을 하고 해당 영화 상위 5~10개를 가져올지 생각해보자.
-         
+    # context = {
+    #     'profile_image': profile_image
+    # }
+    return Response(profile_image)
 
-#     context = {
-#         'random_recommendation_movies': random_recommendation_movies
-#     }
-#     return Response(context)
-
-
-
-#     # context = {
-#     #     'like_movies': person.like_movies
-#     # }
-
-#     # return Response(context)
+    
