@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TodayMovie class="mb-5"/>
+    <TodayMovie v-if="isLogin" class="mb-5"/>
     <RecommendMovieList v-if="isLogin" class="mb-5"/>
     <LatestMovieList/><br>
     <MovieList/>
@@ -29,6 +29,7 @@ export default {
   created() {
     // this.getMovies()
     this.getTodayMovie()
+    this.getWorstMovie()
     this.getRecommendMovies()
     this.getLatestMovies()
   },
@@ -44,6 +45,9 @@ export default {
     },
     getTodayMovie() {
       this.$store.dispatch('getTodayMovie')
+    },
+    getWorstMovie() {
+      this.$store.dispatch('getWorstMovie')
     },
   }
 }

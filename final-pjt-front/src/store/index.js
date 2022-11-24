@@ -27,6 +27,7 @@ export default new Vuex.Store({
     searchWord: null,
     backdropPath: null,
     todayMovie: null,
+    worstMovie: null,
     // profileImage: null,
   },
   getters: {
@@ -85,7 +86,10 @@ export default new Vuex.Store({
     },
     // SHOW_PROFILE_IMAGE(state, profileImage) {
     //   state.profileImage = profileImage
-    // }
+    // },
+    WORST_MOVIE(state, worstMovie) {
+      state.worstMovie = worstMovie
+    },
 
   },
   actions: {
@@ -268,7 +272,20 @@ export default new Vuex.Store({
     //     .catch((err) => {
     //       console.log(err)
     //     })
-    // }
+    // },
+    getWorstMovie(context) {
+      axios({
+        method: 'get',
+        url: `${API_URL}/movies/worst_movie/`,
+      })
+        .then((res) => {
+          console.log(res.data)
+          context.commit('WORST_MOVIE', res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
   },
   modules: {
   }

@@ -1,19 +1,43 @@
 <template>
-  <div class="mx-3">
+  <div class="container-lg mx-3">
 
-    <!-- 이미지 노출 - 민혁 -->
-    <img 
-      v-if="!userImage"
-      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="profile_icon">
-    <img 
-      v-if="userImage"
-      :src="require(`./../../../final-pjt-back/media/${userImage}`)" alt="profile_icon">
-<!-- <img 
-      v-if="!userImage"
-      :src="firstImage" alt="profile_icon"> -->
+    <div class="container-lg row justify-content-evenly pb-5">
+      <!-- 프로필 이미지 -->
+      <img v-if="!userImage" class="profile-img col-4"
+        src="https://www.seekpng.com/png/detail/514-5147412_default-avatar-icon.png" alt="profile_icon">
+      <img v-if="userImage" class="profile-img col-4"
+        :src="require(`./../../../final-pjt-back/media/${userImage}`)" alt="profile_icon">
+      <!-- 내용 -->
+      <div class="col-7">
+        <h1 v-if="userData" style="color: #00ABB3;">{{ userData.username }}</h1>
+        <label
+          for="image_input"
+          class="btn btn-primary mb-2 me-1"
+          style="color: #00ABB3; background-color: white; border: white;" 
+        >프로필 편집</label>
+        <input
+          v-show="false"
+          @change="getProfileImage" 
+          type="file"
+          id="image_input" 
+        >
+        <button
+          @click="changeProfileImage"
+          class="btn btn-primary mb-2"
+          style="color: #00ABB3; background-color: white; border: white;" 
+        >편집 완료</button>
+      </div>
+    </div>
 
-    <!-- 민혁 추가 부분 -->
-    <div>
+    <hr>
+    
+    <div class="container-lg py-5">
+      <LikeMovieList :userData="userData"/><br><br>
+      <MyReviewList :userData="userData" @deleteReview="getProfile"/>
+    </div>
+  </div>
+  
+    <!-- <div>
       <div>
         <label class="profile-label" for="image_input"><b>여기</b></label>
         <span>를 누르고 사용할 프로필 사진을 선택하세요.</span>
@@ -29,13 +53,10 @@
           class='rounded' 
           style="color: white; border:none; background:#4589ef; width:20%;"
       >변경하기</button>
-    </div>
+    </div> -->
     <!-- 민혁 추가 부분 -->
 
-    <h2 v-if="userData" style="color: #00ABB3;">{{ userData.username }}</h2><br>
-    <LikeMovieList :userData="userData"/><br>
-    <MyReviewList :userData="userData" @deleteReview="getProfile"/>
-  </div>
+
 </template>
 
 <script>
@@ -54,7 +75,8 @@ export default {
   data() {
     return {
       userData: null,
-      userImage: null, // 11.24 추가
+      userImage: 'profiles/default.png', // 11.24 추가
+      showvalue: false,
     }
   },
   created() {
@@ -80,9 +102,10 @@ export default {
           console.log(err)
         })
     },
-    getProfileImage() {
-      // console.log(event.target.files)
+    getProfileImage(event) {
+      console.log(event.target.files)
       this.userImage = event.target.files
+      this.showvalue = !this.showvalue
       // console.log(this.userImage)
     },
     // 프로필 이미지 변경
@@ -97,7 +120,8 @@ export default {
         }
         this.$store.dispatch('changeProfileImage', payload)
       }
-        console.log(this.userImage)
+      console.log(this.userImage)
+      this.showvalue = !this.showvalue
        
       //   this.userImage = null
       // }
@@ -128,6 +152,10 @@ export default {
 </script>
 
 <style>
-
+.profile-img {
+  width: 350px;
+  border-radius: 100%;
+  border-image-slice: 100;
+}
 </style>
 

@@ -440,34 +440,77 @@ from datetime import date
 
 @api_view(['GET'])
 def today_movie(request):
+    year = int(date.today().strftime('%Y%m%d')[2:4])
+    month_date = int(date.today().strftime('%Y%m%d')[4:8])
 
-    today = int(date.today().strftime('%Y%m%d'))    # 오늘 날짜를 str형태로 받아와서 int로 바꾸어줌 e.g) 20221124
+    today = year + month_date 
+    today = (today * 100) + 4850
 
-    movies = get_list_or_404(Movie)                 # 영화 전체 DB 가져옴
+    # print('★★★★★★★★★★★★', today,'★★★★★★★★★★★★★')
 
-    cnt = 1                                         # 영화 id와 정확히 일치하지 않을 수 있으니 그냥 7번 기회를 줌
-    while cnt < 8:
-        coincidence = 0                             # 영화 id와 today 숫자가 일치하는가?
-        for movie in movies:
-            if movie.movie_id == today:
-                coincidence += 1
-                break                               # 일치하면 for문 종료       
-        
-        if coincidence > 0:                         # 일치하면 while문 종료
-            break
+    movies = get_list_or_404(Movie)
+    min_diff = 999999
+    min_diff_movie_id = -1
+    for movie in movies:
+        if abs(movie.movie_id - today) < min_diff:
+            min_diff = abs(movie.movie_id - today)
+            min_diff_movie_id = movie.movie_id
 
-        today = (today // 10) + 96                  # 일치하지 않으면 그냥 10으로나는 몫에 96 더해줌 (그냥 우리가 96년생이어서임)
-        cnt += 1
-
-    if cnt > 8:                                     # 기회 7번 날리면
-        today = 274                                 # 그냥 손민혁이 제일 좋아하는 영화인 양들의 침묵 보는거다.. (한니발 존멋)
-
-    # print(cnt)
-    # print(coincidence)
-    # print(today)
-
-    today_movie = get_object_or_404(Movie, movie_id=today)
- 
+    today_movie = get_object_or_404(Movie, movie_id=min_diff_movie_id)
+    
     serializer = MovieSerializer(today_movie)
+
+    return Response(serializer.data)
+
+
+# <고인이 된 today_movie...>
+# today = int(date.today().strftime('%Y%m%d'))    # 오늘 날짜를 str형태로 받아와서 int로 바꾸어줌 e.g) 20221124
+
+# movies = get_list_or_404(Movie)                 # 영화 전체 DB 가져옴
+
+# cnt = 1                                         # 영화 id와 정확히 일치하지 않을 수 있으니 그냥 7번 기회를 줌
+# while cnt < 8:
+#     coincidence = 0                             # 영화 id와 today 숫자가 일치하는가?
+#     for movie in movies:
+#         if movie.movie_id == today:
+#             coincidence += 1
+#             break                               # 일치하면 for문 종료       
+    
+#     if coincidence > 0:                         # 일치하면 while문 종료
+#         break
+
+#     today = (today // 10) + 96                  # 일치하지 않으면 그냥 10으로나는 몫에 96 더해줌 (그냥 우리가 96년생이어서임)
+#     cnt += 1
+
+# if cnt > 8:                                     # 기회 7번 날리면
+#     today = 274                                 # 그냥 손민혁이 제일 좋아하는 영화인 양들의 침묵 보는거다.. (한니발 존멋)
+
+# # print(cnt)
+# # print(coincidence)
+# # print(today)
+
+# today_movie = get_object_or_404(Movie, movie_id=today)
+ 
+# serializer = MovieSerializer(today_movie)
+
+# return Response(serializer.data)
+@api_view(['GET'])
+def worst_movie(request):
+    movies = get_list_or_404(Movie)
+
+    # movie = MovieSerializer(movies[0])
+    # print(movies[0].movie_id)
+    worst_movies = []
+    for movie in movies:
+        if movie.popularity < 20 and movie.vote_average < 5.5:
+            worst_movies.append(movie)
+
+    # print(len(worst_movies), '*********')
+    worst_movie = random.sample(worst_movies, 1)
+    # print(worst_movie[0], '*********')
+
+    worst_movie = get_object_or_404(Movie, movie_id=worst_movie[0].movie_id)
+    
+    serializer = MovieSerializer(worst_movie)
 
     return Response(serializer.data)

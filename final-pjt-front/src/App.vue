@@ -16,7 +16,7 @@
     </nav>
 
     <div class="container-lg" style="min-height: 100%;">
-      <router-view id="fade"/>
+      <router-view :key="$route.fullPath" id="fade"/>
     </div>
 
     <footer class="text-center pb-2">
@@ -56,8 +56,8 @@ export default {
   },
   methods: {
     logOut() {
+      this.$router.push({ name: 'main' })
       this.$store.dispatch('logOut')
-      // this.$router.push({ name: 'movie' })
     },
     searchMovie(event) {
       axios({

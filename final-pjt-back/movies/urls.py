@@ -17,6 +17,7 @@ urlpatterns = [
 
     # 오늘의 영화 (11.23-24 사이 언젠가 추가)
     path('today_movie/', views.today_movie),
+    path('worst_movie/', views.worst_movie),
     path('random_movies/', views.random_movies),
     path('latest_movies/', views.latest_movies),
     # 영화 DB API로 받아오기

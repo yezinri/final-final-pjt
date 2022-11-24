@@ -2,7 +2,6 @@
 
   <div class="container-lg" style="height: 100%;">
 
-
     <div v-if="movie" class="container-lg" style="height: 100%;">
       <div class="row">
         <img class="col-4" :src="movieSrc" :alt="movie.title">
@@ -18,7 +17,7 @@
           <div class="mt-auto">
             <button class="btn btn-primary mb-2" style="background-color: #00ABB3; border: #00ABB3;" id="like-btn" v-if="!isLike" @click="movieLike">좋아요</button>
             <button class="btn btn-primary mb-2" style="background-color: #00ABB3; border: #00ABB3;" id="like-btn" v-if="isLike" @click="movieLike">좋아요 취소</button>
-            <p class="mb-0 fw-lighter">{{ movie.overview }}</p>
+            <p class="mb-0 fw-lighter word">{{ movie.overview }}</p>
           </div>
         </div>
       </div>
@@ -185,5 +184,15 @@ export default {
 </script>
 
 <style>
-
+.word {
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 3 ;
+    -webkit-box-orient: vertical;
+}
 </style>

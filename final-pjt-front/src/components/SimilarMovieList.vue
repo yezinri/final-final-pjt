@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h4 class="mb-4">비슷한 영화</h4>
+    <h4 class="mb-4">관련 영화</h4>
     <div class="hover-container g-4">
       <SimilarMovieListItem
         v-for="similarMovie in similarMovies"
