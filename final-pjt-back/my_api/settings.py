@@ -162,7 +162,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+# 11.24 손민혁 추가
+STATICFILES_DIRS = [
+    BASE_DIR / 'accounts/static/accounts',
+]
+
 STATIC_URL = '/static/'
+
+# 11.24 손민혁 추가 (MEDIA)
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -2,6 +2,7 @@
 
   <div class="container-lg" style="height: 100%;">
 
+
     <div v-if="movie" class="container-lg" style="height: 100%;">
       <div class="row">
         <img class="col-4" :src="movieSrc" :alt="movie.title">
@@ -84,6 +85,7 @@ export default {
     this.getMovieDetail()
     this.getSimilarMovies()
     this.getReviews()
+
   },
   computed: {
     isLike: {
@@ -177,6 +179,7 @@ export default {
           }
         })
     },
+
   }
 }
 </script>

@@ -318,6 +318,22 @@ def recommend(request, username):
                 final_movies.append(not_redundant_movie)
 
     # print(len(final_movies))
+
+    # 좋아요 기반 추천영화들이 DB에 없다면 DB에 넣어주는 과정 (중복은 django가 알아서 처리해줌)
+    for final_movie in final_movies:
+        added_movie = Movie(       
+            adult = final_movie['adult'],
+            movie_id = final_movie['id'],   
+            title = final_movie['title'],
+            genre_ids = final_movie['genre_ids'],  
+            overview = final_movie['overview'],
+            release_date = final_movie['release_date'],
+            popularity = final_movie['popularity'],   
+            vote_average = final_movie['vote_average'],
+            poster_path = final_movie['poster_path'],
+            backdrop_path = final_movie['backdrop_path'],
+        )
+        added_movie.save()
             
 
     context = {
@@ -336,15 +352,20 @@ def similar_movies(request, movie_pk):
         response = requests.get(URL).json()
         movies = response['results']
         for movie in movies:
-            if movie  not in similar_movies:    # 페이지 url에서 가져오면서 간혹 중복되는 경우가 있음
+            if movie not in similar_movies:    # 페이지 url에서 가져오면서 간혹 중복되는 경우가 있음
                 similar_movies.append(movie)
 
+    # 11월 24일 수정 부분 (민혁 - 알고리즘 수정!)
     # print(similar_movies)
     # print(len(similar_movies))
-
-    random_similar_movies = random.sample(similar_movies, 12)
-    # print(random_similar_movies)
-    # print(len(random_similar_movies))
+    similar_movies_len = len(similar_movies)
+    if similar_movies_len >= 12:
+        random_similar_movies = random.sample(similar_movies, 12)
+    else:
+        random_similar_movies = random.sample(similar_movies, similar_movies_len)
+        
+        # print(random_similar_movies)
+        # print(len(random_similar_movies))
     
     context = {
         'random_similar_movies': random_similar_movies

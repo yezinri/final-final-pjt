@@ -27,6 +27,7 @@ export default new Vuex.Store({
     searchWord: null,
     backdropPath: null,
     todayMovie: null,
+    // profileImage: null,
   },
   getters: {
     isLogin(state) {
@@ -81,7 +82,11 @@ export default new Vuex.Store({
     TODAY_MOVIE(state, todayMovie) {
       console.log(todayMovie)
       state.todayMovie = todayMovie
-    }
+    },
+    // SHOW_PROFILE_IMAGE(state, profileImage) {
+    //   state.profileImage = profileImage
+    // }
+
   },
   actions: {
     // getMovies(context) {
@@ -220,13 +225,47 @@ export default new Vuex.Store({
         url: `${API_URL}/movies/today_movie/`,
       })
         .then((res) => {
-          // console.log(res.data)
+          console.log(res.data)
           context.commit('TODAY_MOVIE', res.data)
         })
         .catch((err) => {
           console.log(err)
         })
-    }
+    },
+    changeProfileImage(context, payload) {
+      const formData = new FormData()
+      formData.append('profile_image', payload.userImage[0])
+      // 기존 프로필 사진이 없는 경우 -> POST 요청
+        axios({
+          method: 'post',
+          url: `${API_URL}/accounts/profile/image/${payload.userId}/`,
+          headers: {
+            Authorization: `Token ${context.state.token}`,
+            'Content-Type': 'multipart/form-data'
+          },
+          // data를 정의할 때 아래 형식으로만 가능. 즉 {}안에 넣어서 보내는 형식은 X
+          data: formData, 
+        })
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+    },
+    // showProfileImage(context) {
+    //   axios({
+    //     method: 'get',
+    //     url: `${API_URL}/accounts/profile/show_image/${context.state.userId}/`,
+    //   })
+    //     .then((res) => {
+    //       console.log(res.data)
+    //       context.commit('SHOW_PROFILE_IMAGE', res.data)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    // }
   },
   modules: {
   }
