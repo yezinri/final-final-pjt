@@ -1,12 +1,17 @@
 <template>
   <div class="mx-3">
+
     <!-- 이미지 노출 - 민혁 -->
+    <img 
+      v-if="!userImage"
+      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png" alt="profile_icon">
     <img 
       v-if="userImage"
       :src="require(`./../../../final-pjt-back/media/${userImage}`)" alt="profile_icon">
 <!-- <img 
       v-if="!userImage"
       :src="firstImage" alt="profile_icon"> -->
+
     <!-- 민혁 추가 부분 -->
     <div>
       <div>
@@ -23,10 +28,7 @@
          @click="changeProfileImage"
           class='rounded' 
           style="color: white; border:none; background:#4589ef; width:20%;"
-      >
-        변경하기
-      </button>
-
+      >변경하기</button>
     </div>
     <!-- 민혁 추가 부분 -->
 
@@ -52,7 +54,7 @@ export default {
   data() {
     return {
       userData: null,
-      userImage: 'profiles/facebook.png', // 11.24 추가
+      userImage: null, // 11.24 추가
     }
   },
   created() {
@@ -86,16 +88,17 @@ export default {
     // 프로필 이미지 변경
     changeProfileImage() {
       // 이미지를 선택하지 않았을 경우 경고창
-      // if (this.userImage === null) {
-      //   alert('변경할 프로필 사진을 선택하세요.')
-      // } else {
+      if (this.userImage === null) {
+        alert('변경할 프로필 사진을 선택하세요.')
+      } else {
         const payload = {
           userImage: this.userImage,
           userId: this.userData.userid
         }
+        this.$store.dispatch('changeProfileImage', payload)
+      }
         console.log(this.userImage)
        
-        this.$store.dispatch('changeProfileImage', payload)
       //   this.userImage = null
       // }
     },
